@@ -9,8 +9,9 @@
 body {
   margin:0;
   font-family: 'Segoe UI', sans-serif;
-  background: radial-gradient(circle at top, #1a0f1f, #05050a);
   color:#fff;
+  height:100vh;
+  background: radial-gradient(circle at 20% 30%, #2a0f2f, #05050a);
 }
 
 /* HEADER */
@@ -18,9 +19,7 @@ header {
   display:flex;
   justify-content:space-between;
   align-items:center;
-  padding:15px 20px;
-  background: rgba(10,10,15,0.6);
-  backdrop-filter: blur(12px);
+  padding:15px 25px;
 }
 
 /* LOGO */
@@ -28,15 +27,17 @@ header {
   display:flex;
   align-items:center;
   gap:10px;
+  font-weight:600;
+  color:#ff4da6;
 }
 
+/* HEART */
 .heart {
   width:18px;
   height:18px;
-  background: linear-gradient(135deg,#ff4da6,#ff0080);
-  position:relative;
+  background:#ff4da6;
   transform: rotate(-45deg);
-  animation: heartAppear 0.8s ease forwards;
+  position:relative;
 }
 
 .heart::before,
@@ -44,7 +45,7 @@ header {
   content:"";
   width:18px;
   height:18px;
-  background: inherit;
+  background:#ff4da6;
   border-radius:50%;
   position:absolute;
 }
@@ -52,153 +53,81 @@ header {
 .heart::before { top:-9px; left:0; }
 .heart::after { left:9px; top:0; }
 
-@keyframes heartAppear {
-  0% { opacity:0; transform: scale(0) rotate(-45deg);}
-  100% { opacity:1; transform: scale(1) rotate(-45deg);}
+/* NAV CENTER */
+.nav-center {
+  position:absolute;
+  left:50%;
+  transform:translateX(-50%);
+  display:flex;
+  gap:10px;
+  background: rgba(255,255,255,0.05);
+  padding:5px;
+  border-radius:20px;
 }
 
-.logo span {
-  font-weight:600;
-  font-size:18px;
-  background: linear-gradient(90deg,#ff4da6,#ff77cc);
+/* NAV BUTTON */
+.nav-btn {
+  padding:8px 14px;
+  border-radius:15px;
+  font-size:14px;
+  opacity:0.7;
+}
+
+.active {
+  background: rgba(255,255,255,0.08);
+  opacity:1;
+}
+
+/* PROFILE ICON */
+.profile {
+  width:35px;
+  height:35px;
+  border-radius:50%;
+  background:#1a1a25;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+}
+
+/* CENTER CONTENT */
+.center {
+  text-align:center;
+  margin-top:120px;
+}
+
+.center h1 {
+  font-size:32px;
+  background: linear-gradient(90deg,#ff4da6,#c44dff);
   -webkit-background-clip:text;
   -webkit-text-fill-color:transparent;
-  opacity:0;
-  animation: fadeIn 1s forwards 0.6s;
 }
 
-@keyframes fadeIn {
-  to { opacity:1; }
-}
-
-/* NAV */
-nav span {
-  margin-left:15px;
-  opacity:0.7;
-  font-size:14px;
-}
-
-/* GRID */
-.grid {
-  display:grid;
-  grid-template-columns: repeat(auto-fill,minmax(200px,1fr));
-  gap:20px;
-  padding:20px;
-}
-
-/* CARD */
-.card {
-  background: rgba(255,255,255,0.03);
-  border-radius:20px;
-  overflow:hidden;
-  backdrop-filter: blur(10px);
-  transition:0.3s;
-}
-
-.card:hover {
-  transform: translateY(-5px);
-  background: rgba(255,255,255,0.05);
-}
-
-.card img {
-  width:100%;
-  height:230px;
-  object-fit:cover;
-}
-
-/* BODY */
-.card-body {
-  padding:12px;
-}
-
-.name {
-  font-size:16px;
-  margin-bottom:8px;
-}
-
-/* SERVICES */
-.services {
-  display:flex;
-  flex-wrap:wrap;
-  gap:6px;
-}
-
-.services button {
-  padding:6px 10px;
-  border:none;
-  border-radius:12px;
-  background: linear-gradient(135deg,#ff4da6,#ff0080);
-  color:white;
-  font-size:12px;
-  cursor:pointer;
-}
-
-/* CHAT */
-.chat {
-  position:fixed;
-  bottom:0;
-  right:10px;
-  width:100%;
-  max-width:340px;
-  height:380px;
-  background: rgba(20,20,30,0.9);
-  backdrop-filter: blur(10px);
-  border-radius:20px 20px 0 0;
-  display:flex;
-  flex-direction:column;
-}
-
-.messages {
-  flex:1;
-  padding:10px;
-  overflow:auto;
-}
-
-.msg {
-  margin:5px 0;
-  padding:8px 10px;
-  border-radius:10px;
-  max-width:75%;
-}
-
-.user {
-  background:#ff4da6;
-  margin-left:auto;
-}
-
-.operator {
-  background:#2a2a35;
-}
-
-.input {
-  display:flex;
-  border-top:1px solid #333;
-}
-
-.input input {
-  flex:1;
-  padding:10px;
-  border:none;
-  background:#111;
-  color:#fff;
-}
-
-.input button {
-  background:linear-gradient(135deg,#ff4da6,#ff0080);
-  border:none;
-  padding:10px 15px;
-  color:#fff;
+.center p {
+  opacity:0.6;
+  margin-top:10px;
 }
 
 /* WARNING */
 .warning {
-  margin:20px;
-  padding:12px;
+  position:absolute;
+  bottom:80px;
+  left:50%;
+  transform:translateX(-50%);
+  padding:12px 20px;
   border-radius:12px;
-  background: rgba(255,0,0,0.1);
-  border:1px solid rgba(255,0,0,0.3);
-  text-align:center;
+  border:1px solid rgba(255,0,0,0.4);
+  background: rgba(255,0,0,0.08);
   font-size:13px;
+}
+
+/* FOOTER */
+.footer {
+  position:absolute;
+  bottom:30px;
+  width:100%;
+  text-align:center;
+  font-size:12px;
+  opacity:0.5;
 }
 </style>
 </head>
@@ -206,93 +135,34 @@ nav span {
 <body>
 
 <header>
+
   <div class="logo">
     <div class="heart"></div>
-    <span>BABYGIRL_LNR</span>
+    BABYGIRL_LNR
   </div>
 
-  <nav>
-    <span>👱‍♀️ Девушки</span>
-    <span>💬 Чат</span>
-    <span>🏙 Города</span>
-  </nav>
+  <div class="nav-center">
+    <div class="nav-btn active">👱‍♀️ Девушки</div>
+    <div class="nav-btn">💬 Чат</div>
+    <div class="nav-btn">🏙 Города</div>
+  </div>
+
+  <div class="profile">👤</div>
+
 </header>
 
-<div class="grid" id="girls"></div>
-
-<div class="chat">
-  <div class="messages" id="messages"></div>
-
-  <div class="input">
-    <input id="msgInput" placeholder="Сообщение...">
-    <button onclick="send()">➤</button>
-  </div>
+<div class="center">
+  <h1>Анкеты девушек</h1>
+  <p>Выберите идеальную компанию для незабываемого вечера</p>
 </div>
 
 <div class="warning">
-⚠️ Данный сайт содержит материалы 18+
+⚠️ Данный сайт содержит материалы 18+. Доступ разрешён только лицам старше 18 лет.
 </div>
 
-<script>
-const API = "";
-
-// загрузка анкет
-async function loadGirls(){
-  const res = await fetch(API + "/api/girls");
-  const data = await res.json();
-
-  const container = document.getElementById("girls");
-  container.innerHTML = "";
-
-  data.forEach(g => {
-    const el = document.createElement("div");
-    el.className="card";
-
-    el.innerHTML = `
-      <img src="${g.photo || 'https://via.placeholder.com/300'}">
-      <div class="card-body">
-        <div class="name">${g.name}</div>
-        <div class="services">
-          ${g.services.map(s =>
-            `<button onclick="order('${s.name}')">${s.name} ${s.price}</button>`
-          ).join("")}
-        </div>
-      </div>
-    `;
-
-    container.appendChild(el);
-  });
-}
-
-// чат
-function send(){
-  const input = document.getElementById("msgInput");
-  if(!input.value) return;
-
-  addMsg(input.value,"user");
-  input.value="";
-
-  setTimeout(()=>addMsg("В обработке 💋","operator"),800);
-}
-
-function order(service){
-  addMsg("Выбрано: "+service,"user");
-  setTimeout(()=>addMsg("Заявка принята","operator"),800);
-}
-
-function addMsg(text,type){
-  const msg = document.createElement("div");
-  msg.className="msg "+type;
-  msg.innerText=text;
-  document.getElementById("messages").appendChild(msg);
-}
-
-setTimeout(()=>{
-  addMsg("Здравствуйте 💋 Выберите услугу","operator");
-},500);
-
-loadGirls();
-</script>
+<div class="footer">
+BABYGIRL_LNR — сервис знакомств. Все услуги предоставляются по взаимному согласию.
+</div>
 
 </body>
 </html>
