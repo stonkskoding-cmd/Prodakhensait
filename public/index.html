@@ -1,0 +1,98 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Prodakhen</title>
+<script src="/socket.io/socket.io.js"></script>
+<style>
+body{margin:0;background:#000;color:#fff;font-family:Arial}
+nav{background:#111;padding:10px}
+.section{display:none;padding:20px}
+.active{display:block}
+.card{background:#111;padding:10px;margin:10px}
+#chat{position:fixed;right:20px;bottom:20px;width:320px;height:420px;background:#111;display:flex;flex-direction:column}
+#msgs{flex:1;overflow:auto}
+</style>
+</head>
+<body>
+
+<nav>
+<button onclick="show('client')">Клиент</button>
+<button onclick="show('operator')">Оператор</button>
+<button onclick="show('admin')">Админ</button>
+</nav>
+
+<div id="client" class="section active"></div>
+<div id="operator" class="section"></div>
+<div id="admin" class="section"></div>
+
+<div id="chat">
+<div id="msgs"></div>
+<input id="msg"><button onclick="send()">➤</button>
+</div>
+
+<script>
+const socket=io();
+let chatId=null;
+let token="";
+
+// --- CLIENT ---
+async function loadGirls(){
+ const r=await fetch('/api/girls'); const d=await r.json();
+ client.innerHTML=d.map(g=>'<div class=card>'+g.name+
+ g.services.map(s=>'<button onclick="order(\''+s.name+'\')">'+s.name+' '+s.price+'</button>').join('')+'</div>').join('');
+}
+async function order(){
+ const r=await fetch('/api/chat/create',{method:'POST'}); const c=await r.json();
+ chatId=c._id; socket.emit('join',{chatId}); loadMsgs();
+}
+
+// --- OPERATOR ---
+async function loadChats(){
+ const r=await fetch('/api/operator/chats',{headers:{authorization:token}});
+ const d=await r.json();
+ operator.innerHTML=d.map(c=>'<div onclick="openChat(\''+c._id+'\')">'+c._id+' '+c.status+'</div>').join('');
+}
+function openChat(id){chatId=id;socket.emit('join',{chatId});loadMsgs();}
+
+// --- ADMIN ---
+async function addGirl(){
+ await fetch('/api/girls',{method:'POST',headers:{'Content-Type':'application/json',authorization:token},
+ body:JSON.stringify({name:"Новая",description:"",services:[{name:"услуга",price:1000}]})});
+ alert('ok');
+}
+
+// --- CHAT ---
+async function loadMsgs(){
+ const r=await fetch('/api/chat/'+chatId); const d=await r.json();
+ msgs.innerHTML=d.map(m=>m.sender+': '+m.text).join('<br>');
+}
+function send(){
+ socket.emit('send',{chatId,sender:'user',text:msg.value});
+ msg.value='';
+}
+socket.on('msg',loadMsgs);
+
+// --- UI ---
+function show(id){
+ document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+ document.getElementById(id).classList.add('active');
+ if(id==='client') loadGirls();
+ if(id==='operator') loadChats();
+ if(id==='admin') admin.innerHTML='<button onclick="addGirl()">Добавить анкету</button>';
+}
+
+// demo login
+async function login(){
+ const r=await fetch('/api/login',{method:'POST',headers:{'Content-Type':'application/json'},
+ body:JSON.stringify({username:'admin',password:'1234'})});
+ const d=await r.json(); token=d.token;
+}
+
+login();
+show('client');
+</script>
+
+</body>
+</html>

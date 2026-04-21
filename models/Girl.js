@@ -1,0 +1,1 @@
+const mongoose=require('mongoose');module.exports=mongoose.model('Girl',new mongoose.Schema({name:String,description:String,image:String,services:[{name:String,price:Number}]}));
