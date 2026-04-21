@@ -2,49 +2,91 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>Prodakhen</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BABYGIRL_LNR</title>
 
 <style>
 body {
   margin:0;
   font-family: Arial;
-  background: #0b0b0f;
-  color: #fff;
+  background: #07070c;
+  color:#fff;
 }
 
 /* HEADER */
 header {
   display:flex;
   justify-content:space-between;
-  padding:15px 30px;
-  background: rgba(255,255,255,0.05);
+  align-items:center;
+  padding:15px;
+  background: rgba(0,0,0,0.6);
   backdrop-filter: blur(10px);
 }
 
+/* LOGO */
 .logo {
-  font-size:20px;
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:bold;
   color:#ff4da6;
 }
 
-nav button {
-  background:none;
-  border:none;
-  color:#fff;
-  margin-left:20px;
-  cursor:pointer;
+/* HEART ANIMATION */
+.heart {
+  width:20px;
+  height:20px;
+  background:#ff4da6;
+  position:relative;
+  transform: rotate(-45deg);
+  animation: pop 1s ease forwards;
+}
+
+.heart::before,
+.heart::after {
+  content:"";
+  width:20px;
+  height:20px;
+  background:#ff4da6;
+  border-radius:50%;
+  position:absolute;
+}
+
+.heart::before { top:-10px; left:0; }
+.heart::after { left:10px; top:0; }
+
+@keyframes pop {
+  0% { transform: scale(0) rotate(-45deg); opacity:0; }
+  50% { transform: scale(1.2) rotate(-45deg); }
+  100% { transform: scale(1) rotate(-45deg); opacity:1; }
+}
+
+.logo-text {
+  opacity:0;
+  animation: fadeText 1s ease forwards 0.8s;
+}
+
+@keyframes fadeText {
+  to { opacity:1; }
+}
+
+/* NAV */
+nav span {
+  margin-left:15px;
+  opacity:0.8;
 }
 
 /* GRID */
 .grid {
   display:grid;
-  grid-template-columns: repeat(auto-fill, minmax(250px,1fr));
-  gap:20px;
-  padding:20px;
+  grid-template-columns: repeat(auto-fill, minmax(180px,1fr));
+  gap:15px;
+  padding:15px;
 }
 
 /* CARD */
 .card {
-  background: rgba(255,255,255,0.05);
+  background:#111;
   border-radius:15px;
   overflow:hidden;
   transition:0.3s;
@@ -56,33 +98,35 @@ nav button {
 
 .card img {
   width:100%;
-  height:250px;
+  height:200px;
   object-fit:cover;
 }
 
 .card-body {
-  padding:15px;
+  padding:10px;
 }
 
 .services button {
-  margin:5px;
+  margin:5px 5px 0 0;
   padding:5px 10px;
   border:none;
-  border-radius:8px;
-  background:#ff4da6;
+  border-radius:10px;
+  background: linear-gradient(135deg,#ff4da6,#ff1f8f);
   color:#fff;
   cursor:pointer;
+  font-size:12px;
 }
 
 /* CHAT */
 .chat {
   position:fixed;
-  right:20px;
-  bottom:20px;
-  width:300px;
-  height:400px;
+  bottom:0;
+  right:0;
+  width:100%;
+  max-width:350px;
+  height:350px;
   background:#111;
-  border-radius:15px;
+  border-radius:20px 20px 0 0;
   display:flex;
   flex-direction:column;
 }
@@ -98,6 +142,7 @@ nav button {
   padding:8px;
   border-radius:10px;
   max-width:70%;
+  font-size:14px;
 }
 
 .user {
@@ -117,6 +162,8 @@ nav button {
   flex:1;
   border:none;
   padding:10px;
+  background:#222;
+  color:#fff;
 }
 
 .input button {
@@ -125,16 +172,32 @@ nav button {
   padding:10px;
   color:#fff;
 }
+
+/* WARNING */
+.warning {
+  margin:15px;
+  padding:10px;
+  border:1px solid red;
+  border-radius:10px;
+  color:#ff4d4d;
+  text-align:center;
+  font-size:12px;
+}
 </style>
 </head>
 
 <body>
 
 <header>
-  <div class="logo">Prodakhen</div>
+  <div class="logo">
+    <div class="heart"></div>
+    <div class="logo-text">BABYGIRL_LNR</div>
+  </div>
+
   <nav>
-    <button>Девушки</button>
-    <button>Чат</button>
+    <span>👱‍♀️ Девушки</span>
+    <span>💬 Чат</span>
+    <span>🏙 Города</span>
   </nav>
 </header>
 
@@ -146,6 +209,10 @@ nav button {
     <input id="msgInput" placeholder="Сообщение...">
     <button onclick="send()">➤</button>
   </div>
+</div>
+
+<div class="warning">
+⚠️ Данный сайт содержит материалы 18+. Доступ только 18+
 </div>
 
 <script>
@@ -163,12 +230,11 @@ async function loadGirls(){
     el.className = "card";
 
     el.innerHTML = `
-      <img src="${g.photo}">
+      <img src="${g.photo || 'https://via.placeholder.com/300x400'}">
       <div class="card-body">
-        <h3>${g.name}</h3>
-        <p>${g.description || ""}</p>
+        <b>${g.name}</b>
         <div class="services">
-          ${g.services.map(s => `<button onclick="order('${g._id}','${s.name}')">${s.name} ${s.price}</button>`).join("")}
+          ${g.services.map(s => `<button onclick="order('${s.name}')">${s.name} ${s.price}</button>`).join("")}
         </div>
       </div>
     `;
@@ -177,8 +243,9 @@ async function loadGirls(){
   });
 }
 
-function order(id, service){
+function order(service){
   sendMessage("Выбрана услуга: " + service);
+  setTimeout(()=>sendOperator("Заявка принята 💋"),800);
 }
 
 function send(){
@@ -193,6 +260,17 @@ function sendMessage(text){
   msg.innerText=text;
   document.getElementById("messages").appendChild(msg);
 }
+
+function sendOperator(text){
+  const msg = document.createElement("div");
+  msg.className="msg operator";
+  msg.innerText=text;
+  document.getElementById("messages").appendChild(msg);
+}
+
+setTimeout(()=>{
+  sendOperator("Здравствуйте 💋 Выберите услугу");
+},500);
 
 loadGirls();
 </script>
