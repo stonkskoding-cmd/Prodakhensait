@@ -101,7 +101,7 @@ class App {
   }
 
   _connectSocket() {
-   const wsUrl = 'wss://prodakhen.onrender.com';
+  const wsUrl = 'wss://prodakhen.onrender.com';
     this.socket = new SocketClient(wsUrl, () => state.token);
     this.socket.connect();
     this.chat = new ChatManager(this.socket);
