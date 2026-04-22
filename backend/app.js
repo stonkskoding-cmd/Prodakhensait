@@ -13,10 +13,11 @@ export const createApp = () => {
   const app = express();
 
   // Security middleware
-  app.use(cors({ 
-    origin: process.env.FRONTEND_URL || 'http://localhost:8080',
-    credentials: true 
-  }));
+app.use(cors({
+  origin: ['https://babylgirl-lnr.netlify.app'],  // <- фронтенд URL
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+}));
   
   app.use(rateLimit({ windowMs: 15 * 60 * 1000, max: 100 }));
   app.use(express.json({ limit: '10mb' }));
