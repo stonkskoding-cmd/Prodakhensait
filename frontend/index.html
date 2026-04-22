@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="theme-color" content="#0a0a0f" />
+  <meta name="description" content="BABYGIRL_LNR — Premium Dating Service" />
+  <title>BABYGIRL_LNR</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/variables.css" />
+  <link rel="stylesheet" href="css/animations.css" />
+  <link rel="stylesheet" href="css/components.css" />
+  <link rel="stylesheet" href="css/layout.css" />
+  <link rel="stylesheet" href="css/chat.css" />
+</head>
+<body>
+  <!-- Background Video -->
+  <div class="bg-video">
+    <video autoplay loop muted playsinline>
+      <source src="assets/video/bg.mp4" type="video/mp4" />
+    </video>
+    <div class="bg-overlay"></div>
+  </div>
+
+  <!-- Floating Orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- App Container -->
+  <div id="app" class="app">
+    <!-- Header -->
+    <header class="header">
+      <div class="logo" id="logo">
+        <span class="logo-heart">❤️</span>
+        <span class="logo-text">BABYGIRL_LNR</span>
+      </div>
+      <nav class="nav" id="nav">
+        <button class="nav-btn active" data-view="catalog">Каталог</button>
+        <button class="nav-btn" data-view="chats">Чаты</button>
+        <button class="nav-btn" data-view="profile">Профиль</button>
+      </nav>
+      <div class="header-actions" id="headerActions">
+        <button class="btn btn-secondary btn-sm" id="authBtn">Войти</button>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main" id="main">
+      <!-- Auth View -->
+      <section class="view view-auth active" id="view-auth">
+        <div class="auth-card glass">
+          <h2 class="auth-title">Добро пожаловать <span class="gradient-text">✨</span></h2>
+          <form id="authForm" class="auth-form">
+            <input type="text" id="username" placeholder="Имя пользователя" required minlength="3" maxlength="20" />
+            <input type="password" id="password" placeholder="Пароль" required minlength="6" />
+            <button type="submit" class="btn btn-primary btn-block">Продолжить</button>
+          </form>
+          <p class="auth-switch">Нет аккаунта? <a href="#" id="toggleAuthMode">Создать</a></p>
+        </div>
+      </section>
+
+      <!-- Catalog View -->
+      <section class="view view-catalog" id="view-catalog">
+        <div class="catalog-header">
+          <h1 class="page-title">Выбери <span class="gradient-text">анкету</span></h1>
+          <div class="filters">
+            <select id="cityFilter" class="filter-select glass">
+              <option value="">Все города</option>
+              <option value="Москва">Москва</option>
+              <option value="СПб">СПб</option>
+              <option value="Казань">Казань</option>
+              <option value="Екатеринбург">Екатеринбург</option>
+              <option value="Новосибирск">Новосибирск</option>
+            </select>
+            <label class="filter-toggle">
+              <input type="checkbox" id="onlineOnly" />
+              <span>Только онлайн</span>
+            </label>
+          </div>
+        </div>
+        <div class="girls-grid" id="girlsGrid">
+          <!-- Cards rendered by JS -->
+        </div>
+        <div class="loading" id="catalogLoading">
+          <div class="spinner"></div>
+        </div>
+      </section>
+
+      <!-- Chat View -->
+      <section class="view view-chat" id="view-chat">
+        <div class="chat-container glass" id="chatContainer">
+          <div class="chat-header">
+            <button class="btn-back" id="chatBack">←</button>
+            <div class="chat-info">
+              <img class="chat-avatar" id="chatAvatar" src="" alt="" />
+              <div class="chat-meta">
+                <span class="chat-name" id="chatName">—</span>
+                <span class="chat-status" id="chatStatus">offline</span>
+              </div>
+            </div>
+            <div class="chat-actions">
+              <span class="status-dot" id="operatorStatus"></span>
+            </div>
+          </div>
+          <div class="chat-messages" id="chatMessages">
+            <!-- Messages rendered by JS -->
+          </div>
+          <div class="chat-input-area">
+            <div class="quick-replies" id="quickReplies">
+              <!-- Quick reply buttons -->
+            </div>
+            <form class="chat-form" id="chatForm">
+              <input type="text" id="messageInput" placeholder="Напишите сообщение..." autocomplete="off" />
+              <button type="submit" class="btn-send">➤</button>
+            </form>
+          </div>
+        </div>
+      </section>
+
+      <!-- Chats List View -->
+      <section class="view view-chats" id="view-chats">
+        <h1 class="page-title">Мои <span class="gradient-text">чаты</span></h1>
+        <div class="chats-list" id="chatsList">
+          <!-- Chat items rendered by JS -->
+        </div>
+      </section>
+
+      <!-- Profile View -->
+      <section class="view view-profile" id="view-profile">
+        <div class="profile-card glass">
+          <div class="profile-header">
+            <div class="profile-avatar">👤</div>
+            <h2 id="profileUsername">Гость</h2>
+          </div>
+          <div class="profile-stats">
+            <div class="stat"><span class="stat-value" id="statChats">0</span><span class="stat-label">Чатов</span></div>
+            <div class="stat"><span class="stat-value" id="statOrders">0</span><span class="stat-label">Заказов</span></div>
+          </div>
+          <button class="btn btn-secondary btn-block" id="logoutBtn">Выйти</button>
+        </div>
+      </section>
+    </main>
+
+    <!-- Modal -->
+    <div class="modal" id="modal">
+      <div class="modal-backdrop" id="modalBackdrop"></div>
+      <div class="modal-content glass" id="modalContent">
+        <!-- Dynamic content -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
