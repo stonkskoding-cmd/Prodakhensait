@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:3000/api';;
+const API_BASE = 'https://prodakhen.onrender.com/api';
 
 export class ApiClient {
   constructor(getToken) {
