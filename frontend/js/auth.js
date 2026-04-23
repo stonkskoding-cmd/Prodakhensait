@@ -1,75 +1,40 @@
-import { state } from './state.js';
 import { api } from './api.js';
-import { $, showModal, switchView } from './ui.js';
 
-export class AuthManager {
-  constructor(onAuthChange) {
-    this.onAuthChange = onAuthChange;
-    this._initForm();
-    this._initToggle();
-    this._initLogout();
-  }
+const emailInput = document.querySelector('#email');
+const passwordInput = document.querySelector('#password');
 
-  _initForm() {
-    let isRegister = false;
-    
-    $('#authForm').onsubmit = async (e) => {
-      e.preventDefault();
-      const username = $('#username').value.trim();
-      const password = $('#password').value;
-      
-      try {
-        const endpoint = isRegister ? '/auth/register' : '/auth/login';
-        const { token, user } = await api.post(endpoint, { username, password });
-        
-        state.update({ token, user });
-        this.onAuthChange(user);
-        switchView('catalog');
-        showModal('<p>✨ Добро пожаловать!</p>');
-        
-      } catch (err) {
-        showModal(`<p>❌ ${err.message}</p>`);
-      }
-    };
-    
-    window.toggleAuthMode = (e) => {
-      e?.preventDefault();
-      isRegister = !isRegister;
-      $('#authForm').querySelector('button').textContent = isRegister ? 'Создать аккаунт' : 'Войти';
-      $('#toggleAuthMode').textContent = isRegister ? 'Войти' : 'Создать';
-    };
-  }
+const loginBtn = document.querySelector('#loginBtn');
+const registerBtn = document.querySelector('#registerBtn');
 
-  _initToggle() {
-    $('#authBtn').onclick = () => {
-      if (state.isAuthenticated()) {
-        switchView('profile');
-      } else {
-        switchView('auth');
-      }
-    };
-  }
+async function login() {
+  try {
+    const data = await api.post('/auth/login', {
+      email: emailInput.value,
+      password: passwordInput.value
+    });
 
-  _initLogout() {
-    $('#logoutBtn').onclick = () => {
-      state.reset();
-      this.onAuthChange(null);
-      switchView('catalog');
-      showModal('<p>👋 Вы вышли из аккаунта</p>');
-    };
-  }
-
-  updateUI(user) {
-    const authBtn = $('#authBtn');
-    const profileName = $('#profileUsername');
-    
-    if (user) {
-      authBtn.textContent = user.username.slice(0, 12);
-      authBtn.classList.replace('btn-secondary', 'btn-primary');
-      if (profileName) profileName.textContent = user.username;
-    } else {
-      authBtn.textContent = 'Войти';
-      authBtn.classList.replace('btn-primary', 'btn-secondary');
-    }
+    localStorage.setItem('token', data.token);
+    alert('Вход успешен');
+    location.reload();
+  } catch (e) {
+    alert('Ошибка логина: ' + e.message);
   }
 }
+
+async function register() {
+  try {
+    const data = await api.post('/auth/register', {
+      email: emailInput.value,
+      password: passwordInput.value
+    });
+
+    localStorage.setItem('token', data.token);
+    alert('Регистрация успешна');
+    location.reload();
+  } catch (e) {
+    alert('Ошибка регистрации: ' + e.message);
+  }
+}
+
+loginBtn.onclick = login;
+registerBtn.onclick = register;
