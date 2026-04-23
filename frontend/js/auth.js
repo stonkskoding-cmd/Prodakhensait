@@ -1,6 +1,6 @@
 import { api } from './api.js';
 
-const emailInput = document.querySelector('#email');
+const emailInput = document.querySelector('#username');
 const passwordInput = document.querySelector('#password');
 
 const loginBtn = document.querySelector('#loginBtn');
