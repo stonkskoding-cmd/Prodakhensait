@@ -1,6 +1,6 @@
 import { api } from './api.js';
 
-const emailInput = document.querySelector('#username');
+const usernameInput = document.querySelector('#username');
 const passwordInput = document.querySelector('#password');
 
 const loginBtn = document.querySelector('#loginBtn');
@@ -9,7 +9,7 @@ const registerBtn = document.querySelector('#registerBtn');
 async function login() {
   try {
     const data = await api.post('/auth/login', {
-      email: emailInput.value,
+      username: usernameInput.value,
       password: passwordInput.value
     });
 
@@ -24,7 +24,7 @@ async function login() {
 async function register() {
   try {
     const data = await api.post('/auth/register', {
-      email: emailInput.value,
+      username: usernameInput.value,
       password: passwordInput.value
     });
 
